@@ -17,7 +17,7 @@ env.metadata = {
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 agent = DDPGAgent(state_size=env.observation_space.shape[0], action_size=env.action_space.shape[0], random_seed=0)
 video_dir = "videos_1"
-video_freq = 10
+video_freq = 100
 
 def should_record_video(episode_idx: int) -> bool:
     result = episode_idx > 0 and episode_idx % video_freq == 0
