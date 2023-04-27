@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+from torch.optim.lr_scheduler import StepLR
 
 BUFFER_SIZE = int(1e5)
 BATCH_SIZE = 64
@@ -18,13 +19,13 @@ WEIGHT_DECAY = 0
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 class Actor(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
+    def __init__(self, state_size, action_size, seed, hidden_size=128):
         super(Actor, self).__init__()
         self.seed = torch.manual_seed(seed)
-        self.layers = nn.ModuleList([nn.Linear(state_size, hidden_sizes[0])])
-        self.layers.extend([nn.Linear(h1, h2) for h1, h2 in zip(hidden_sizes[:-1], hidden_sizes[1:])])
-        self.layers.append(nn.Linear(hidden_sizes[-1], action_size))
+        self.layers = nn.ModuleList([nn.Linear(state_size, hidden_size),
+                                      nn.Linear(hidden_size, action_size)])
 
     def forward(self, state):
         x = state
@@ -33,7 +34,35 @@ class Actor(nn.Module):
         return torch.tanh(self.layers[-1](x))
 
 class Critic(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
+    def __init__(self, state_size, action_size, seed, hidden_size=128):
+        super(Critic, self).__init__()
+        self.seed = torch.manual_seed(seed)
+        self.layers = nn.ModuleList([nn.Linear(state_size + action_size, hidden_size),
+                                      nn.Linear(hidden_size, 1)])
+
+    def forward(self, state, action):
+        x = torch.cat((state, action), dim=1)
+        for i, layer in enumerate(self.layers[:-1]):
+            x = F.relu(layer(x))
+        return self.layers[-1](x)
+'''
+class Actor(nn.Module):
+    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128, 128)):
+        super(Actor, self).__init__()
+        self.seed = torch.manual_seed(seed)
+        self.layers = nn.ModuleList([nn.Linear(state_size, hidden_sizes[0])])
+        self.layers.extend([nn.Linear(h1, h2) for h1, h2 in zip(hidden_sizes[:-1], hidden_sizes[1:])])
+        self.layers.append(nn.Linear(hidden_sizes[-1], action_size))
+
+
+    def forward(self, state):
+        x = state
+        for i, layer in enumerate(self.layers[:-1]):
+            x = F.relu(layer(x))
+        return torch.tanh(self.layers[-1](x))
+
+class Critic(nn.Module):
+    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128, 128)):
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.layers = nn.ModuleList([nn.Linear(state_size + action_size, hidden_sizes[0])])
@@ -45,7 +74,7 @@ class Critic(nn.Module):
         for i, layer in enumerate(self.layers[:-1]):
             x = F.relu(layer(x))
         return self.layers[-1](x)
-
+'''
 class OUNoise:
     def __init__(self, size, seed, mu=0., theta=0.15, sigma=0.2):
         self.mu = mu * np.ones(size)
@@ -109,6 +138,9 @@ class DDPGAgent():
 
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
 
+        self.actor_lr_scheduler = StepLR(self.actor_optimizer, step_size=1000, gamma=1)
+        self.critic_lr_scheduler = StepLR(self.critic_optimizer, step_size=1000, gamma=1)
+
     def step(self, state, action, reward, next_state, done):
         self.memory.add(state, action, reward, next_state, done)
 
@@ -152,6 +184,9 @@ class DDPGAgent():
 
         self.soft_update(self.critic_local, self.critic_target, TAU)
         self.soft_update(self.actor_local, self.actor_target, TAU)
+
+        self.actor_lr_scheduler.step()
+        self.critic_lr_scheduler.step()
 
     def soft_update(self, local_model, target_model, tau):
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
