@@ -46,5 +46,7 @@ The script also periodically saves weights to `checkpoint_actor.pth` and `checkp
 
 Furthermore, the script saves a CSV file, `Training_data.csv`, that logs training information for each episode, including episode number, gravity, wind power, and average score.
 
+its important to note that currently there is no way to change the neural network structure other than changing the hidden_sizes paramter of __init__ in both the actor and critic Class, this may be changed in the future to allow more accessability.
+
 ## Testing a model
 You can test a model by running test.py and supplying it with a path to a saved model
