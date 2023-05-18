@@ -28,9 +28,13 @@ You can install these using the requirements.txt and pip:
 
 ## Files in the repository
 DDPG_agent.py: Contains the code for the DDPG agent.
+
 TD3_agent.py: Contains the code for the TD3 agent.
+
 lunar_lander.py: Contain a modified version of the Lunar Lander from Gymnasium
+
 main.py: The main run file to train a model
+
 test.py: A file to test models
 
 ## Running the code
