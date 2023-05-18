@@ -43,3 +43,6 @@ During the training process, the script will save the weights of the best perfor
 The script also periodically saves weights to `checkpoint_actor.pth` and `checkpoint_critic.pth` every few episodes.
 
 Furthermore, the script saves a CSV file, `Training_data.csv`, that logs training information for each episode, including episode number, gravity, wind power, and average score.
+
+##Testing a model
+You can test a model by running test.py and supplying it with a path to a saved model
