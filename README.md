@@ -40,7 +40,7 @@ test.py: A file to test models
 ## Running the code
 You can run the main file in your Python environment. You'll be prompted to choose between the DDPG and TD3 agent.
 
-During the training process, the script will save the weights of the best performing model to `best_checkpoint_actor.pth` and `best_checkpoint_critic.pth` for DDPG with an additional `best_checkpoint_critic2.pth` for TD3.
+During the training process, the script will save the weights of the best performing model to `best_checkpoint_actor.pth` for both DDPG and TD3. Additinally  `best_checkpoint_critic.pth` for DDPG with `best_checkpoint_critic1.pth` and `best_checkpoint_critic2.pth` for TD3. After running for 1000 episodes it will save the new best checkpoints by adding a `_i` for the i'th better checkpoint. This to ensures that we can see how the models with the best score changes and in our testing the last saved model was the last one saved.
 
 The script also periodically saves weights to `checkpoint_actor.pth` and `checkpoint_critic.pth` every few episodes.
 
