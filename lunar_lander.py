@@ -5,6 +5,7 @@ import warnings
 from typing import TYPE_CHECKING, Optional
 
 import numpy as np
+import random
 
 import gymnasium as gym
 from gymnasium import error, spaces
