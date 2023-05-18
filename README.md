@@ -1,5 +1,5 @@
 # Lunar-Landing-with-multiple-uncertainties
-The Lunar Lander from gymnasium with multiple sources of uncertainties and continuous action space
+The Lunar Lander from gymnasium with multiple sources of uncertainties and continuous action and state space. Made in concert with [mikeair8](https://github.com/mikeair8)
 
 Based on work done in https://arxiv.org/abs/2011.11850 with code https://github.com/rogerxcn/lunar_lander_project.
 
@@ -34,6 +34,7 @@ DDPG_agent.py: Contains the code for the DDPG agent.
 TD3_agent.py: Contains the code for the TD3 agent.
 lunar_lander.py: Contain a modified version of the Lunar Lander from Gymnasium
 main.py: The main run file to train a model
+test.py: A file to test models
 
 ##Running the code
 You can run the main file in your Python environment. You'll be prompted to choose between the DDPG and TD3 agent.
