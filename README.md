@@ -11,19 +11,16 @@ These instructions will get you a copy of the project up and running on your loc
 
 ##Prerequisites
 To run this code, you will need 64-bit python >= 3.8 and the following libraries:
-`
-torch
 
-gymnasium
-
-numpy
-
+```
+torch >= 1.12.1
+gymnasium[box2d] >= 0.26.1
+numpy >= 1.20
+moviepy >= 1.0.3
 csv
-
 collections
-
 random
-`
+```
 
 You can install these using the requirements.txt and pip:
 `pip install -r requirements.txt`
