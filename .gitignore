@@ -129,6 +129,8 @@ dmypy.json
 .pyre/
 
 # Custom ignores
-.pth
+*.pth
+*.pdf
+*.csv
 .idea/
 .spyderproject/
