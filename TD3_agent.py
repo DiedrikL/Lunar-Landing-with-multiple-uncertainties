@@ -26,7 +26,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Define Actor model. It is a policy-based model which gives us the action given a state
 class Actor(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(256, 256)):
+    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
         super(Actor, self).__init__()
         self.seed = torch.manual_seed(seed)
         # Define the layers of the network
@@ -45,7 +45,7 @@ class Actor(nn.Module):
 
 # Define Critic model. It is a value-based model which gives us the Q-value given a state-action pair
 class Critic(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(256, 256)):
+    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
         # Define the layers of the network
