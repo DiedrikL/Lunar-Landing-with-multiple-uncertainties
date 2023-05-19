@@ -6,14 +6,15 @@ from TD3_agent import TD3Agent
 import csv
 import os
 from gymnasium.wrappers import RecordVideo
-video_dir = "videos_test"
-random.seed(8787)
+
+
 def save_to_csv(filename, episode, score):
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
         if episode == 0:
             writer.writerow(['Episode', 'Score'])
         writer.writerow([episode, score])
+
 
 def rename(filename_actor, filename_critic1, filename_critic2, scores):
     avg = int(sum(scores) / len(scores))
@@ -32,6 +33,7 @@ def load_checkpoints(agent, actor_checkpoint_path, critic1_checkpoint_path, crit
     agent.critic_local1.load_state_dict(torch.load(critic1_checkpoint_path))
     agent.critic_local2.load_state_dict(torch.load(critic2_checkpoint_path))
 
+
 # Run trials
 def run_trials(agent, env, num_trials, actor, critic1, critic2, re, save):
     scores = []
@@ -41,7 +43,7 @@ def run_trials(agent, env, num_trials, actor, critic1, critic2, re, save):
         rand_wind = random.randint(0, 20)
         env = gym.make("LunarLander-v2", continuous=True, gravity=rand_gravity, enable_wind=True, wind_power=rand_wind,
                        render_mode='rgb_array')
-        #env = RecordVideo(env, video_dir)
+        # env = RecordVideo(env, video_dir)
         state = env.reset()
         agent.reset()
         score = 0
@@ -57,7 +59,6 @@ def run_trials(agent, env, num_trials, actor, critic1, critic2, re, save):
 
         if score < 0:
             print("")
-            #os.rename("C:/Users/NeuralMet/Desktop/Mike/videos_test/rl-video-episode-0.mp4", f"C:/Users/NeuralMet/Desktop/Mike/videos_test/{int(score)}-{i}.mp4")
 
         scores.append(score)
         print(f'Trial {i + 1}, Score: {score}')
@@ -70,33 +71,29 @@ def run_trials(agent, env, num_trials, actor, critic1, critic2, re, save):
         return scores
 
 
-
-# Create the environment
-env = gym.make("LunarLander-v2", continuous=True, render_mode='rgb_array')
-
-# Create the DDPG agent
-agent = TD3Agent(state_size=env.observation_space.shape[0], action_size=env.action_space.shape[0], random_seed=0)
 def run_all_rename(path):
-    rename = True
-    for i in range (8):
+    renames = True
+    for i in range(8):
         actor = path + f"best_checkpoint_actor_{i}.pth"
         critic1 = path + f"best_checkpoint_critic1_{i}.pth"
         critic2 = path + f"best_checkpoint_critic2_{i}.pth"
         load_checkpoints(agent, actor, critic1, critic2)
-        run_trials(agent, env, 400, actor, critic1, critic2, rename, False)
+        run_trials(agent, env, 400, actor, critic1, critic2, renames, False)
+
 
 def run_average(path):
-    rename = False
+    renames = False
     avgs = []
-    for i in range (3):
-        actor = path + f"best_checkpoint_actor_267.pth"
-        critic1 = path + f"best_checkpoint_critic1_267.pth"
-        critic2 = path + f"best_checkpoint_critic2_267.pth"
+    for i in range(3):
+        actor = path + f"best_checkpoint_actor.pth"
+        critic1 = path + f"best_checkpoint_critic1.pth"
+        critic2 = path + f"best_checkpoint_critic2.pth"
 
         load_checkpoints(agent, actor, critic1, critic2)
-        scores = run_trials(agent, env, 400, actor, critic1, critic2, rename, False)
+        scores = run_trials(agent, env, 400, actor, critic1, critic2, renames, False)
         avgs.append(int(sum(scores) / len(scores)))
-    print (avgs)
+    print(avgs)
+
 
 def run_single(save, rename, path):
     actor = path + f"best_checkpoint_actor.pth"
@@ -109,8 +106,17 @@ def run_single(save, rename, path):
     print("top score:", max(scores))
 
 
+video_dir = "videos_test"
+random.seed(8787)
+
+# Create the environment
+env = gym.make("LunarLander-v2", continuous=True, render_mode='rgb_array')
+
+# Create the DDPG agent
+agent = TD3Agent(state_size=env.observation_space.shape[0], action_size=env.action_space.shape[0], random_seed=0,
+                 hidden_sizes=(128, 128))
+
 # Define the path to the checkpoints "your/desired/path/here/"
 path = input("insert your path here: ")
-
 
 run_single(True, False, path)
