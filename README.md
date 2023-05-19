@@ -55,3 +55,5 @@ Its important to note that currently there is no way to change the neural networ
 You can test a DDPG model by running `test_DDPG.py` and supplying it with a path to saved DDPG a actor and a critc weights. Or test a TD3 model by running `test_TD3.py` and supplying it with a path to saved a TD3 actor and two critics weights.
 
 If you want to test models that have other structures than the default 128-128 hidden sizes, you will have to go into the source code of the DDPG and TD3 agent and change it as mentioned in earlier.
+
+The test script will look for files with the name `best_checkpoint_actor.pth` for both DDPG and TD3. Additinally `best_checkpoint_critic.pth` for DDPG with `best_checkpoint_critic1.pth` and `best_checkpoint_critic2.pth` for TD3.
