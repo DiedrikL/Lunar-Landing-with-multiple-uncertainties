@@ -16,6 +16,7 @@ To run this code, you will need 64-bit python >= 3.8 and the following libraries
 
 ```
 torch >= 1.12.1
+swig
 gymnasium[box2d] >= 0.26.1
 numpy >= 1.20
 moviepy >= 1.0.3
