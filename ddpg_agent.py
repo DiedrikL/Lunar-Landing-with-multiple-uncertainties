@@ -22,7 +22,7 @@ WEIGHT_DECAY = 0
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class Actor(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
+    def __init__(self, state_size, action_size, seed, hidden_sizes):
         super(Actor, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.layers = nn.ModuleList([nn.Linear(state_size, hidden_sizes[0])])
@@ -37,7 +37,7 @@ class Actor(nn.Module):
 
 
 class Critic(nn.Module):
-    def __init__(self, state_size, action_size, seed, hidden_sizes=(128, 128)):
+    def __init__(self, state_size, action_size, seed, hidden_sizes):
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.layers = nn.ModuleList([nn.Linear(state_size + action_size, hidden_sizes[0])])
@@ -111,17 +111,17 @@ class ReplayBuffer:
 class DDPGAgent:
 
     # Initialize the agent
-    def __init__(self, state_size, action_size, random_seed):
+    def __init__(self, state_size, action_size, random_seed, hidden_sizes=(128, 128)):
         self.state_size = state_size
         self.action_size = action_size
         self.seed = np.random.seed(random_seed)
 
-        self.actor_local = Actor(state_size, action_size, random_seed).to(device)
-        self.actor_target = Actor(state_size, action_size, random_seed).to(device)
+        self.actor_local = Actor(state_size, action_size, random_seed, hidden_sizes).to(device)
+        self.actor_target = Actor(state_size, action_size, random_seed, hidden_sizes).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=ACTOR_LR)
 
-        self.critic_local = Critic(state_size, action_size, random_seed).to(device)
-        self.critic_target = Critic(state_size, action_size, random_seed).to(device)
+        self.critic_local = Critic(state_size, action_size, random_seed, hidden_sizes).to(device)
+        self.critic_target = Critic(state_size, action_size, random_seed, hidden_sizes).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=CRITIC_LR, weight_decay=WEIGHT_DECAY)
 
         self.noise = OUNoise(action_size, random_seed)
