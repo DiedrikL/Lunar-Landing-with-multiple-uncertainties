@@ -52,7 +52,7 @@ Furthermore, the script saves a CSV file, `Training_data.csv`, that logs trainin
 When initializing the agents, whether it be the DDPG or the TD3 agent, they will take 4 paramaters (state_size, action_size, random_seed, hidden_sizes), its important to note that the `hidden sizes` parameter will take hidden sizes in the format (128, 128), where each value is a hidden layer and the value dictates how many nodes that hidden layer will have. the default `hidden sizes` is (128, 128)
 
 ## Testing a model
-You can test a DDPG model by running `test_DDPG.py` and supplying it with a path to saved DDPG a actor and a critc weights. Or test a TD3 model by running `test_TD3.py` and supplying it with a path to saved a TD3 actor and two critics weights.
+You can test a DDPG model by running `test_DDPG.py` and supplying it with a path to a folder with a saved DDPG model with an actor and a critc weights. Or test a TD3 model by running `test_TD3.py` and supplying it with a path to a folder with a saved TD3 model with an actor and two critics weights.
 
 If you want to test models that have other structures than the default 128-128 hidden sizes, you will have to change the `hidden sizes` parameter.
 
