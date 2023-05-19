@@ -50,7 +50,7 @@ def run_trials(agent, env, num_trials, actor, critic1, critic2, re, save):
         state = state[0]
         done = False
         steps = 0
-        while not done and steps < max_steps:
+        while not done and steps <= max_steps:
             steps += 1
             action = agent.act(state, add_noise=False)
             next_state, reward, done, _, __ = env.step(action.squeeze())
