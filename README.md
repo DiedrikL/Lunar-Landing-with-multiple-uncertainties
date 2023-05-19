@@ -5,6 +5,8 @@ Based on work done in https://arxiv.org/abs/2011.11850 with code https://github.
 
 Using the simulator Lunar Lander in Box2D from https://gymnasium.farama.org/environments/box2d/lunar_lander/
 
+We are using the Deep Deterministic Policy Gradient(DDPG) and Twin Delayed Deep Deterministic Policy Gradient(TD3) as the reinforcement learning algorithms.
+
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -17,10 +19,8 @@ torch >= 1.12.1
 gymnasium[box2d] >= 0.26.1
 numpy >= 1.20
 moviepy >= 1.0.3
-csv
-collections
-random
 ```
+If you are running on windows you may need to install `Microsoft C++ Build Tools` found here https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 You can install these using the requirements.txt and pip:
 `pip install -r requirements.txt`
@@ -35,7 +35,9 @@ lunar_lander.py: Contain a modified version of the Lunar Lander from Gymnasium
 
 main.py: The main run file to train a model
 
-test.py: A file to test models
+test_DDPG.py: A file to test DDPG models
+
+test_TD3.py: A file to test TD3 models
 
 ## Running the code
 You can run the main file in your Python environment. You'll be prompted to choose between the DDPG and TD3 agent.
